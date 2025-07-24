@@ -4,6 +4,7 @@ const saltRounds = 10;
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+app.use(cors({ origin: '*' }));
 const bodyParser = require('body-parser');
 
 const app = express();
@@ -67,6 +68,6 @@ app.post('/login', async (req, res) => {
 });
 
 // Start server
-app.listen(5000, () => {
+app.listen(5000,'0.0.0.0', () => {
   console.log('🚀 Server running on http://localhost:5000');
 });

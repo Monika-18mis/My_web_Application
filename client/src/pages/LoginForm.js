@@ -10,7 +10,7 @@ function LoginForm() {
     e.preventDefault();
 
     try {
-      const res = await fetch('http://localhost:5000/login', {
+      const res = await fetch('http://13.233.115.68:5000/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
