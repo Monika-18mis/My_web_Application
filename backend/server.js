@@ -1,4 +1,3 @@
-// server.js
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
@@ -9,21 +8,12 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
-// Middleware
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'https://frontend.com'); // Replace with your real frontend domain
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Auth-Token');
-  res.header('Access-Control-Allow-Credentials', 'true');
-  res.header('Access-Control-Expose-Headers', 'X-Custom-Header');
-  res.header('Access-Control-Max-Age', '86400');
+// ✅ FIXED: Use proper CORS setup
+app.use(cors({
+  origin: 'http://localhost:3000', // Your React frontend URL
+  credentials: true
+}));
 
-  if (req.method === 'OPTIONS') {
-    return res.sendStatus(204);
-  }
-
-  next();
-});
 app.use(bodyParser.json());
 
 // MongoDB connection
@@ -51,7 +41,6 @@ app.post('/register', async (req, res) => {
     const newUser = new User({ email, password: hashedPassword });
     await newUser.save();
 
-
     res.status(201).json({ message: 'User registered successfully' });
   } catch (err) {
     res.status(500).json({ message: 'Error registering user' });
@@ -70,7 +59,6 @@ app.post('/login', async (req, res) => {
     if (!isMatch) {
      return res.status(401).json({ message: 'Invalid credentials' });
     }
-
 
     res.status(200).json({ message: 'Login successful' });
   } catch (err) {
